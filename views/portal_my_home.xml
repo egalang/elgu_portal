@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Add a tile on /my -->
+    <template id="portal_my_home_elgu_requests" inherit_id="portal.portal_my_home">
+        <xpath expr="//div[contains(@class, 'o_portal_docs')]" position="inside">
+            <a class="o_portal_doc d-flex align-items-center justify-content-between"
+               href="/my/elgu/requests">
+                <div>
+                    <div class="h5 mb-0">Your Requests</div>
+                    <div class="text-muted small">Track your eLGU applications</div>
+                </div>
+                <span class="fa fa-chevron-right text-muted"/>
+            </a>
+        </xpath>
+    </template>
+
+</odoo>
