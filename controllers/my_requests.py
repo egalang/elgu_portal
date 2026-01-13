@@ -98,7 +98,9 @@ class ElguMyRequests(http.Controller):
                 return request.redirect(f"/my/elgu/requests/{request_id}?error=Failed+to+create+invoice")
 
         if req_rec.invoice_id:
-            return request.redirect(f"/my/invoices/{req_rec.invoice_id.id}")
+            invoice = req_rec.invoice_id.sudo()
+            invoice._portal_ensure_token()
+            return request.redirect(f"/my/invoices/{invoice.id}?access_token={invoice.access_token}")
 
         return request.redirect(f"/my/elgu/requests/{request_id}?error=Invoice+not+created")
     

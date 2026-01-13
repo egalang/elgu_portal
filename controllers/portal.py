@@ -86,9 +86,14 @@ class ElguPortal(http.Controller):
         if not req_rec.invoice_id and req_rec.amount_total > 0:
             req_rec.sudo().action_create_invoice()
 
-        # Reuse standard invoice portal payment flow
         if req_rec.invoice_id:
-            return request.redirect(f"/my/invoices/{req_rec.invoice_id.id}")
+            invoice = req_rec.invoice_id.sudo()
+
+            # IMPORTANT: generate/ensure portal token exists
+            invoice._portal_ensure_token()
+
+            # Redirect including token (works with Odoo portal payment flow)
+            return request.redirect(f"/my/invoices/{invoice.id}?access_token={invoice.access_token}")
 
         return request.redirect(f"/my/elgu/requests/{request_id}")
 
