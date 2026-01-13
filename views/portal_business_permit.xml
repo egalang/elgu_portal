@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <!-- Page 2: Business Permit service page -->
+  <template id="portal_service_business_permit" name="Service - Business Permit">
+    <t t-call="website.layout">
+      <div class="container my-5">
+
+        <nav aria-label="breadcrumb" class="mb-4">
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="/services">Services</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Business Permit</li>
+          </ol>
+        </nav>
+
+        <div class="mb-4">
+          <h1 class="mb-2">Business Permit</h1>
+          <p class="text-muted mb-0">
+            Apply online for a new business permit or renew an existing one. Upload requirements and track your application status.
+          </p>
+        </div>
+
+        <div class="row g-4">
+
+          <!-- NEW -->
+          <div class="col-12 col-lg-6">
+            <div class="card h-100 shadow-sm">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                  <div>
+                    <h4 class="card-title mb-1">Business Permit - New</h4>
+                    <p class="text-muted mb-0" t-if="bp_new"><t t-esc="bp_new.fee_notes or ''"/></p>
+                    <p class="text-muted mb-0" t-if="not bp_new">Type not configured yet (BP_NEW).</p>
+                  </div>
+                </div>
+
+                <hr class="my-4"/>
+
+                <h6 class="text-uppercase text-muted mb-2">Requirements</h6>
+                <ul class="mb-4" t-if="bp_new and bp_new.requirement_ids">
+                  <t t-foreach="bp_new.requirement_ids" t-as="req">
+                    <li>
+                      <t t-esc="req.name"/>
+                      <t t-if="req.required">
+                        <span class="badge text-bg-danger ms-1">Required</span>
+                      </t>
+                    </li>
+                  </t>
+                </ul>
+                <p class="text-muted" t-if="bp_new and not bp_new.requirement_ids">No requirements set yet.</p>
+
+                <a class="btn btn-primary w-100"
+                   t-att-href="'/services/business-permit/apply/BP_NEW'"
+                   t-attf-class="btn btn-primary w-100 #{'disabled' if not bp_new else ''}">
+                  Apply for New Permit
+                </a>
+
+                <p class="small text-muted mt-2 mb-0" t-if="is_public_user">
+                  You will be asked to log in or register.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- RENEWAL -->
+          <div class="col-12 col-lg-6">
+            <div class="card h-100 shadow-sm">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                  <div>
+                    <h4 class="card-title mb-1">Business Permit - Renewal</h4>
+                    <p class="text-muted mb-0" t-if="bp_renew"><t t-esc="bp_renew.fee_notes or ''"/></p>
+                    <p class="text-muted mb-0" t-if="not bp_renew">Type not configured yet (BP_RENEW).</p>
+                  </div>
+                </div>
+
+                <hr class="my-4"/>
+
+                <h6 class="text-uppercase text-muted mb-2">Requirements</h6>
+                <ul class="mb-4" t-if="bp_renew and bp_renew.requirement_ids">
+                  <t t-foreach="bp_renew.requirement_ids" t-as="req">
+                    <li>
+                      <t t-esc="req.name"/>
+                      <t t-if="req.required">
+                        <span class="badge text-bg-danger ms-1">Required</span>
+                      </t>
+                    </li>
+                  </t>
+                </ul>
+                <p class="text-muted" t-if="bp_renew and not bp_renew.requirement_ids">No requirements set yet.</p>
+
+                <a class="btn btn-outline-primary w-100"
+                   t-att-href="'/services/business-permit/apply/BP_RENEW'"
+                   t-attf-class="btn btn-outline-primary w-100 #{'disabled' if not bp_renew else ''}">
+                  Apply for Renewal
+                </a>
+
+                <p class="small text-muted mt-2 mb-0" t-if="is_public_user">
+                  You will be asked to log in or register.
+                </p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </t>
+  </template>
+
+  <!-- Stub page so Apply doesn't 404 while we build Page 3 -->
+  <template id="portal_coming_soon" name="Portal - Coming Soon">
+    <t t-call="website.layout">
+      <div class="container my-5">
+        <h1 class="mb-2"><t t-esc="title"/></h1>
+        <p class="text-muted">
+          This application page is next in the build sequence.
+        </p>
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <p class="mb-0">
+              Selected service code: <strong><t t-esc="code"/></strong>
+            </p>
+          </div>
+        </div>
+
+        <div class="mt-4">
+          <a class="btn btn-secondary" href="/services/business-permit">Back</a>
+          <a class="btn btn-outline-primary ms-2" href="/my">Go to My Account</a>
+        </div>
+      </div>
+    </t>
+  </template>
+
+</odoo>

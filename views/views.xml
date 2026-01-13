@@ -1,0 +1,60 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+<!--
+    <record model="ir.ui.view" id="elgu_portal.list">
+      <field name="name">elgu_portal list</field>
+      <field name="model">elgu_portal.elgu_portal</field>
+      <field name="arch" type="xml">
+        <list>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </list>
+      </field>
+    </record>
+-->
+
+    <!-- actions opening views on models -->
+<!--
+    <record model="ir.actions.act_window" id="elgu_portal.action_window">
+      <field name="name">elgu_portal window</field>
+      <field name="res_model">elgu_portal.elgu_portal</field>
+      <field name="view_mode">list,form</field>
+    </record>
+-->
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="elgu_portal.action_server">
+      <field name="name">elgu_portal server</field>
+      <field name="model_id" ref="model_elgu_portal_elgu_portal"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "list,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+<!--
+    <menuitem name="elgu_portal" id="elgu_portal.menu_root"/>
+-->
+    <!-- menu categories -->
+<!--
+    <menuitem name="Menu 1" id="elgu_portal.menu_1" parent="elgu_portal.menu_root"/>
+    <menuitem name="Menu 2" id="elgu_portal.menu_2" parent="elgu_portal.menu_root"/>
+-->
+    <!-- actions -->
+<!--
+    <menuitem name="List" id="elgu_portal.menu_1_list" parent="elgu_portal.menu_1"
+              action="elgu_portal.action_window"/>
+    <menuitem name="Server to list" id="elgu_portal" parent="elgu_portal.menu_2"
+              action="elgu_portal.action_server"/>
+-->
+  </data>
+</odoo>

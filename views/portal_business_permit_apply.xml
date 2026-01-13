@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <template id="portal_business_permit_apply" name="Apply - Business Permit">
+    <t t-call="website.layout">
+      <div class="container my-5">
+
+        <nav aria-label="breadcrumb" class="mb-4">
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="/services">Services</a></li>
+            <li class="breadcrumb-item"><a href="/services/business-permit">Business Permit</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Apply</li>
+          </ol>
+        </nav>
+
+        <div class="mb-4">
+          <h1 class="mb-2">
+            Apply: <t t-esc="req_type.name"/>
+          </h1>
+          <p class="text-muted mb-0">
+            Please fill in the details below. You can upload requirements after submission.
+          </p>
+        </div>
+
+        <t t-if="error">
+          <div class="alert alert-danger" role="alert">
+            <t t-esc="error"/>
+          </div>
+        </t>
+
+        <div class="row g-4">
+          <div class="col-12 col-lg-7">
+            <div class="card shadow-sm">
+              <div class="card-body">
+                <form t-att-action="'/services/business-permit/apply/%s' % code" method="post">
+                  <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                  <div class="mb-3">
+                    <label class="form-label">Business Name <span class="text-danger">*</span></label>
+                    <input class="form-control" name="business_name" type="text" required="required" placeholder="e.g. Kape Tambay Cafe"/>
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Trade Name</label>
+                    <input class="form-control" name="trade_name" type="text" placeholder="e.g. Kape Tambay"/>
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Business Address</label>
+                    <textarea class="form-control" name="business_address" rows="3" placeholder="Complete address"></textarea>
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Additional Notes</label>
+                    <textarea class="form-control" name="notes" rows="3" placeholder="Optional notes for the LGU"></textarea>
+                  </div>
+
+                  <button class="btn btn-primary w-100" type="submit">
+                    Submit Application
+                  </button>
+
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-lg-5">
+            <div class="card shadow-sm">
+              <div class="card-body">
+                <h5 class="card-title mb-3">Requirements</h5>
+                <t t-if="req_type.requirement_ids">
+                  <ul class="mb-0">
+                    <t t-foreach="req_type.requirement_ids" t-as="req">
+                      <li class="mb-1">
+                        <t t-esc="req.name"/>
+                        <t t-if="req.required">
+                          <span class="badge text-bg-danger ms-1">Required</span>
+                        </t>
+                        <t t-if="not req.required">
+                          <span class="badge text-bg-secondary ms-1">Optional</span>
+                        </t>
+                      </li>
+                    </t>
+                  </ul>
+                </t>
+                <t t-if="not req_type.requirement_ids">
+                  <p class="text-muted mb-0">No requirements configured yet.</p>
+                </t>
+              </div>
+            </div>
+
+            <div class="card shadow-sm mt-4">
+              <div class="card-body">
+                <h6 class="text-uppercase text-muted mb-2">Applicant</h6>
+                <div><strong><t t-esc="partner.name"/></strong></div>
+                <div class="text-muted"><t t-esc="partner.email or ''"/></div>
+                <div class="text-muted"><t t-esc="partner.phone or ''"/></div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </t>
+  </template>
+
+</odoo>

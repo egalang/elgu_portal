@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Portal: only own requests -->
+    <record id="rule_elgu_request_portal_own" model="ir.rule">
+        <field name="name">eLGU Requests (Portal): Own Only</field>
+        <field name="model_id" ref="elgu_core.model_elgu_request"/>
+        <field name="domain_force">[('applicant_id','child_of',[user.partner_id.commercial_partner_id.id])]</field>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <!-- Portal: only own requirement documents -->
+    <record id="rule_elgu_request_doc_portal_own" model="ir.rule">
+        <field name="name">eLGU Request Docs (Portal): Own Only</field>
+        <field name="model_id" ref="elgu_core.model_elgu_request_document"/>
+        <field name="domain_force">[('request_id.applicant_id','child_of',[user.partner_id.commercial_partner_id.id])]</field>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+</odoo>

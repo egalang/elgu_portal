@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_elgu_request_portal,elgu.request portal,elgu_core.model_elgu_request,base.group_portal,1,1,1,0
+access_elgu_request_doc_portal,elgu.request.document portal,elgu_core.model_elgu_request_document,base.group_portal,1,1,1,0
+access_elgu_request_type_portal,elgu.request.type portal,elgu_core.model_elgu_request_type,base.group_portal,1,0,0,0
+access_elgu_requirement_portal,elgu.requirement portal,elgu_core.model_elgu_requirement,base.group_portal,1,0,0,0
+access_elgu_request_stage_portal,elgu.request.stage portal,elgu_core.model_elgu_request_stage,base.group_portal,1,0,0,0

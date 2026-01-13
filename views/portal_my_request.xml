@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="portal_my_elgu_request_detail" name="My eLGU Request - Detail">
+        <t t-call="website.layout">
+            <div class="container my-5">
+
+                <nav aria-label="breadcrumb" class="mb-4">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item">
+                            <a href="/my">My Account</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">Request <t t-esc="req.name" /></li>
+                    </ol>
+                </nav>
+
+                <t t-if="success">
+                    <div class="alert alert-success" role="alert">
+                        <t t-esc="success" />
+                    </div>
+                </t>
+                <t t-if="error">
+                    <div class="alert alert-danger" role="alert">
+                        <t t-esc="error" />
+                    </div>
+                </t>
+
+                <div
+                    class="d-flex flex-column flex-lg-row align-items-start justify-content-between gap-3 mb-4">
+                    <div>
+                        <h1 class="mb-1">
+                            <t t-esc="req.request_type_id.name" />
+                        </h1>
+                        <div class="text-muted"> Reference: <strong>
+                                <t t-esc="req.name" />
+                            </strong>
+              <t
+                                t-if="req.reference_no_external">
+                                <span class="mx-1">|</span> External Ref: <strong>
+                                    <t t-esc="req.reference_no_external" />
+                                </strong>
+                            </t>
+                        </div>
+                    </div>
+
+                    <div class="text-start text-lg-end">
+                        <div class="mb-2">
+                            <span class="badge text-bg-secondary"> Stage: <t
+                                    t-esc="req.stage_id.name if req.stage_id else 'N/A'" />
+                            </span>
+                        </div>
+                        <t t-if="missing_required_count">
+                            <div class="small text-danger"> Missing required uploads: <strong>
+                                    <t t-esc="missing_required_count" />
+                                </strong>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+
+                <div class="row g-4">
+
+                    <!-- Left: Details -->
+                    <div class="col-12 col-lg-5">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title mb-3">Applicant</h5>
+                                <div>
+                                    <strong>
+                                        <t t-esc="req.applicant_id.name" />
+                                    </strong>
+                                </div>
+                                <div class="text-muted">
+                                    <t t-esc="req.applicant_id.email or ''" />
+                                </div>
+                                <div class="text-muted">
+                                    <t t-esc="req.applicant_id.phone or ''" />
+                                </div>
+
+                                <hr class="my-4" />
+
+                                <h6 class="text-uppercase text-muted mb-2">Fees</h6>
+                                <div class="d-flex justify-content-between">
+                                    <span>Total</span>
+                                    <strong>
+                                        <t t-esc="req.amount_total" />
+                                    </strong>
+                                </div>
+
+                                <t t-if="req.invoice_id">
+                                    <div class="mt-2 small text-muted">
+                                        Invoice: <t t-esc="req.invoice_id.name" />
+                                        <span class="mx-1">|</span>
+                                        Payment: <t t-esc="req.invoice_id.payment_state or ''" />
+                                    </div>
+                                </t>
+
+
+
+                                <t t-if="req.decision_notes">
+                                    <hr class="my-4" />
+                                    <h6 class="text-uppercase text-muted mb-2">Your Notes</h6>
+                                    <pre class="mb-0" style="white-space: pre-wrap;"><t t-esc="req.decision_notes"/></pre>
+                                </t>
+
+                                <t
+                                    t-if="req.amount_total and req.amount_total &gt; 0 and (not req.invoice_id or (req.invoice_id and req.invoice_id.payment_state != 'paid'))">
+                                    <div class="mt-3">
+                                        <a class="btn btn-primary w-100"
+                                            t-att-href="'/my/elgu/requests/%s/pay' % req.id">
+                                            Pay Now
+                                        </a>
+                                    </div>
+                                </t>
+
+                                <t t-if="req.invoice_id and req.invoice_id.payment_state == 'paid'">
+                                    <div class="alert alert-success mt-3 mb-0" role="alert">
+                                        Payment received.
+                                    </div>
+                                </t>
+
+                                <t t-if="req.released_attachment_id and (not req.invoice_id or req.invoice_id.payment_state == 'paid')">
+                                    <div class="mt-3">
+                                        <a class="btn btn-success w-100"
+                                        t-att-href="'/my/elgu/requests/%s/download' % req.id">
+                                            Download Released Document
+                                        </a>
+                                    </div>
+                                </t>
+
+                                <t t-if="not req.released_attachment_id">
+                                    <div class="small text-muted mt-3">
+                                        Released document not yet available.
+                                    </div>
+                                </t>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Requirements + Upload -->
+                    <div class="col-12 col-lg-7">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title mb-3">Requirements</h5>
+
+                                <t t-if="not req.document_ids">
+                                    <p class="text-muted mb-0">No requirement checklist found for
+                                        this request.</p>
+                                </t>
+
+                                <t t-if="req.document_ids">
+                                    <div class="table-responsive">
+                                        <table class="table align-middle">
+                                            <thead>
+                                                <tr>
+                                                    <th>Requirement</th>
+                                                    <th style="width: 120px;">Required</th>
+                                                    <th style="width: 140px;">Status</th>
+                                                    <th style="width: 260px;">Upload</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <t t-foreach="req.document_ids" t-as="doc">
+                                                    <tr>
+                                                        <td>
+                                                            <div>
+                                                                <strong>
+                                                                    <t
+                                                                        t-esc="doc.requirement_id.name" />
+                                                                </strong>
+                                                            </div>
+                                                            <t t-if="doc.remarks">
+                                                                <div class="small text-muted">
+                                                                    <t t-esc="doc.remarks" />
+                                                                </div>
+                                                            </t>
+                                                        </td>
+
+                                                        <td>
+                                                            <t t-if="doc.is_required">
+                                                                <span class="badge text-bg-danger">
+                                                                    Yes</span>
+                                                            </t>
+                                                            <t t-if="not doc.is_required">
+                                                                <span
+                                                                    class="badge text-bg-secondary">
+                                                                    No</span>
+                                                            </t>
+                                                        </td>
+
+                                                        <td>
+                                                            <t t-set="status"
+                                                                t-value="doc.status or 'missing'" />
+                                                            <t t-if="status == 'accepted'">
+                                                                <span class="badge text-bg-success">
+                                                                    Accepted</span>
+                                                            </t>
+                                                            <t t-elif="status == 'submitted'">
+                                                                <span class="badge text-bg-primary">
+                                                                    Submitted</span>
+                                                            </t>
+                                                            <t t-elif="status == 'rejected'">
+                                                                <span class="badge text-bg-danger">
+                                                                    Rejected</span>
+                                                            </t>
+                                                            <t t-else="">
+                                                                <span class="badge text-bg-warning">
+                                                                    Missing</span>
+                                                            </t>
+
+                                                            <t t-if="doc.attachment_id">
+                                                                <div class="small mt-1">
+                                                                    <a
+                                                                        t-att-href="'/web/content/%s?download=true' % doc.attachment_id.id">
+                                                                        Download
+                                                                    </a>
+                                                                </div>
+                                                            </t>
+                                                        </td>
+
+                                                        <td>
+                                                            <form
+                                                                t-att-action="'/my/elgu/requests/%s/upload/%s' % (req.id, doc.id)"
+                                                                method="post"
+                                                                enctype="multipart/form-data"
+                                                                class="d-flex gap-2">
+                                                                <input type="hidden"
+                                                                    name="csrf_token"
+                                                                    t-att-value="request.csrf_token()" />
+                                                                <input
+                                                                    class="form-control form-control-sm"
+                                                                    type="file" name="file" />
+                                                                <button
+                                                                    class="btn btn-sm btn-outline-primary"
+                                                                    type="submit">
+                                                                    Upload
+                                                                </button>
+                                                            </form>
+                                                        </td>
+
+                                                    </tr>
+                                                </t>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </t>
+
+                            </div>
+                        </div>
+
+                        <!-- Next steps placeholder -->
+                        <div class="card shadow-sm mt-4">
+                            <div class="card-body">
+                                <h6 class="text-uppercase text-muted mb-2">Next Steps</h6>
+                                <p class="mb-0 text-muted">
+                                    Payment and document release will be enabled in the next pages
+                                    (Page 5 and Page 6).
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </t>
+    </template>
+
+</odoo>
