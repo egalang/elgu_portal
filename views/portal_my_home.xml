@@ -15,7 +15,7 @@
         <xpath expr="//div[@id='portal_client_category']" position="inside">
             <t t-call="portal.portal_docs_entry">
                 <!-- You can replace icon with your own SVG path later -->
-                <t t-set="icon" t-value="'/account/static/src/img/bill.svg'"/>
+                <t t-set="icon" t-value="'/account/static/src/img/bank.svg'"/>
                 <t t-set="title">Your Requests</t>
                 <t t-set="url" t-value="'/my/elgu/requests'"/>
                 <t t-set="text">Track your eLGU applications</t>
